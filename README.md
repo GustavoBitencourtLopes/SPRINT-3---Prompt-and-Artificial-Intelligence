@@ -48,4 +48,5 @@ Sem esses três, o notebook trava logo nas primeiras células. Siga o passo a pa
 
 ## Equipe
 
-Ver `identificacao_equipe.txt` — **esse arquivo não faz parte do repositório**, é anexado separadamente apenas na entrega da plataforma da FIAP, junto com o link deste repositório.
+Gustavo Bitencourt-RM:568885, Daniel Vieira-RM: 573326, Leonardo Takachi-RM: 569066, Giovane Salazar-RM: 570396
+ 
