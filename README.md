@@ -9,11 +9,11 @@ Disciplina: Prompt and Artificial Intelligence — FIAP × GoodWe Brasil — 202
 | Arquivo | O que é |
 |---|---|
 | `sprint-3.ipynb` | Notebook principal — pipeline conversacional em LangChain, memória de sessão, testes de segurança e comparação entre 2 modelos |
+| `GW_HCA-G2_User-Manual-PT.pdf` | Manual da GoodWe usado como base de conhecimento (RAG) — necessário pra rodar o notebook |
 | `resultados_seguranca.csv` | 6 casos de teste de segurança (prompt injection, escopo, conselho jurídico/elétrico), com a resposta obtida e a avaliação manual |
 | `comparativo_modelos.csv` | Resultados do eval set (5 perguntas) rodado nos 2 modelos comparados |
 | `relatorio_modelos.md` | Parâmetros usados, resultados e seleção justificada do modelo/parametrização |
 | `relatorio_evolucao_sprint03.pdf` | Relatório de evolução do projeto (resumo, refatoração, comparativo antes/depois, problemas e soluções, equipe) |
-| `identificacao_equipe.txt` | Nome, RM e turma de cada integrante |
 
 ## O que mudou em relação à Sprint 02
 
@@ -32,7 +32,7 @@ Sem esses três, o notebook trava logo nas primeiras células. Siga o passo a pa
 ## Como rodar
 
 1. **Suba o notebook no Kaggle** (Settings → Accelerator: **None**, esse notebook não precisa de GPU).
-2. **Anexe o PDF do manual GoodWe como input**: clique em "+ Add Input" → "Upload" → selecione o PDF do manual GoodWe. O notebook procura automaticamente qualquer `.pdf` dentro de `/kaggle/input`, então não importa o nome do dataset.
+2. **Anexe o PDF do manual GoodWe como input**: o arquivo `GW_HCA-G2_User-Manual-PT.pdf` está neste repositório — baixe ele e, no Kaggle, clique em "+ Add Input" → "Upload" → selecione o PDF baixado. O notebook procura automaticamente qualquer `.pdf` dentro de `/kaggle/input`, então não importa o nome do dataset que você criar ao subir.
 3. **Configure sua API key da HuggingFace como Secret**:
    - Gere um token em [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
    - No Kaggle, vá em **Add-ons → Secrets** e crie um secret com esse token
@@ -48,4 +48,4 @@ Sem esses três, o notebook trava logo nas primeiras células. Siga o passo a pa
 
 ## Equipe
 
-Ver `identificacao_equipe.txt`.
+Ver `identificacao_equipe.txt` — **esse arquivo não faz parte do repositório**, é anexado separadamente apenas na entrega da plataforma da FIAP, junto com o link deste repositório.
