@@ -42,6 +42,12 @@ O pipeline principal (memória, Bloco A) e os testes de segurança (Bloco C) rod
 - `max_new_tokens` reduzido para 300 (em vez de 1000) para conter esse consumo de crédito na comparação de modelos — algumas respostas mais longas do eval set saíram truncadas (ver `relatorio_modelos.md`, seção 3).
 - O modelo local (Qwen2.5-1.5B) é pequeno; em alguns casos de teste de segurança a resposta pode sair um pouco desorganizada mesmo sem quebrar o guardrail — isso está registrado com honestidade nas avaliações de `resultados_seguranca.csv` (2 dos 6 casos foram marcados como "PARCIAL", não "OK").
 
+
+## Histórico de Commits
+
+<img width="904" height="443" alt="image" src="https://github.com/user-attachments/assets/34e0fb33-4d7d-4698-a0c1-d4d7c962f874" />
+
+
 ## Equipe
 
 Gustavo Bitencourt — RM: 568885, Daniel Vieira — RM: 573326, Leonardo Takachi — RM: 569066, Giovane Salazar — RM: 570396
