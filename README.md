@@ -8,45 +8,40 @@ Disciplina: Prompt and Artificial Intelligence — FIAP × GoodWe Brasil — 202
 
 | Arquivo | O que é |
 |---|---|
-| `sprint-3.ipynb` | Notebook principal — pipeline conversacional em LangChain, memória de sessão, testes de segurança e comparação entre 2 modelos |
+| `sprint3.ipynb` | Notebook principal — pipeline conversacional em LangChain, memória de sessão, testes de segurança e comparação entre 2 modelos |
 | `GW_HCA-G2_User-Manual-PT.pdf` | Manual da GoodWe usado como base de conhecimento (RAG) — necessário pra rodar o notebook |
 | `resultados_seguranca.csv` | 6 casos de teste de segurança (prompt injection, escopo, conselho jurídico/elétrico), com a resposta obtida e a avaliação manual |
-| `comparativo_modelos.csv` | Resultados do eval set (5 perguntas) rodado nos 2 modelos comparados |
+| `comparativo_modelos.csv` | Resultados do eval set (5 perguntas) rodado nos 2 modelos comparados — também funciona como cache: se a cota da HuggingFace estiver esgotada, o notebook reaproveita este arquivo em vez de travar |
 | `relatorio_modelos.md` | Parâmetros usados, resultados e seleção justificada do modelo/parametrização |
 | `relatorio_evolucao_sprint03.pdf` | Relatório de evolução do projeto (resumo, refatoração, comparativo antes/depois, problemas e soluções, equipe) |
 
 ## O que mudou em relação à Sprint 02
 
-Na Sprint 02, o chatbot era um RAG manual: ChromaDB chamado diretamente e respostas geradas via HuggingFace Inference Client, sem memória de conversa real (o parâmetro de histórico existia mas nunca era usado). Na Sprint 03, o núcleo foi reconstruído com **LangChain**: retrieval via `langchain-chroma`, prompt estruturado (`ChatPromptTemplate`) e memória de sessão nativa via `RunnableWithMessageHistory`. Detalhes completos em `relatorio_evolucao_sprint03.pdf`.
+Na Sprint 02, o chatbot era um RAG manual: ChromaDB chamado diretamente e respostas geradas via HuggingFace Inference Client, sem memória de conversa real (o parâmetro de histórico existia mas nunca era usado). Na Sprint 03, o núcleo foi reconstruído com LangChain: retrieval via `langchain-chroma`, prompt estruturado (`ChatPromptTemplate`) e memória de sessão nativa via `RunnableWithMessageHistory`. Detalhes completos em `relatorio_evolucao_sprint03.pdf`.
 
-## ⚠️ Importante: o notebook NÃO roda "do zero" com um clique
-
-Diferente de um script comum, este notebook depende de 3 coisas externas que **não vêm junto do arquivo** e precisam ser configuradas por quem for rodar:
-
-1. Uma API key da HuggingFace (para os modelos de chat)
-2. O PDF do manual GoodWe anexado como input do notebook (não está embutido no `.ipynb`)
-3. Crédito disponível na conta da HuggingFace usada (o plano gratuito tem cota mensal — ver "Limitações" abaixo)
-
-Sem esses três, o notebook trava logo nas primeiras células. Siga o passo a passo abaixo antes de rodar.
+O pipeline principal (memória, Bloco A) e os testes de segurança (Bloco C) rodam num **modelo local e gratuito** (`Qwen/Qwen2.5-1.5B-Instruct`, com fallback automático para `TinyLlama/TinyLlama-1.1B-Chat-v1.0`) — não dependem de nenhuma cota externa. Só a comparação entre modelos (Bloco B) usa a API da HuggingFace (`DeepSeek-V4.1-Flash` e `Llama-3.1-8B-Instruct`).
 
 ## Como rodar
 
-1. **Suba o notebook no Kaggle** (Settings → Accelerator: **None**, esse notebook não precisa de GPU).
-2. **Anexe o PDF do manual GoodWe como input**: o arquivo `GW_HCA-G2_User-Manual-PT.pdf` está neste repositório — baixe ele e, no Kaggle, clique em "+ Add Input" → "Upload" → selecione o PDF baixado. O notebook procura automaticamente qualquer `.pdf` dentro de `/kaggle/input`, então não importa o nome do dataset que você criar ao subir.
-3. **Configure sua API key da HuggingFace como Secret**:
-   - Gere um token em [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
-   - No Kaggle, vá em **Add-ons → Secrets** e crie um secret com esse token
-   - O notebook tenta os nomes `giovani-secret`, `HUGGING_FACE_API_KEY` e a variável de ambiente `HF_TOKEN`, nessa ordem — dê um desses nomes ao seu secret (ou adicione o nome que você escolheu na lista `NOMES_SECRET_CANDIDATOS`, na seção 3 do notebook)
-4. **Rode as células em ordem**, da seção 1 até a seção 11. A seção 7 escolhe automaticamente 2 modelos "leves" com base no que sua conta/token consegue acessar — os nomes exatos podem variar dos usados na nossa execução.
-5. A seção 12 é **opcional** (interface Gradio de demonstração) — pode ser pulada sem prejuízo.
+1. Suba o notebook no Kaggle (**Settings → Accelerator: None** é suficiente; com GPU ele roda mais rápido, mas não é obrigatório).
+2. Anexe **dois arquivos** como input do notebook, via **"+ Add Input" → "Upload"**:
+   - `GW_HCA-G2_User-Manual-PT.pdf` (obrigatório — o notebook procura automaticamente qualquer `.pdf` dentro de `/kaggle/input`, não importa o nome do dataset).
+   - `comparativo_modelos.csv` (opcional, mas recomendado — sem ele, se a cota da HuggingFace estiver esgotada, o Bloco B não tem um arquivo pra reaproveitar e a célula fica incompleta).
+3. Token da HuggingFace **(opcional)** — só necessário para o Bloco B (comparação entre modelos). Os Blocos A e C funcionam sem ele.
+   - Gere um token em huggingface.co/settings/tokens.
+   - No Kaggle, vá em **Add-ons → Secrets** e crie um secret com esse token.
+   - O notebook tenta os nomes `giovani-secret`, `HUGGING_FACE_API_KEY` e a variável de ambiente `HF_TOKEN`, nessa ordem — use um desses nomes (ou adicione o seu na lista `NOMES_SECRET_CANDIDATOS`, na seção 3 do notebook).
+4. Rode as células em ordem, da seção 1 até a seção 12 (a seção 12 é só um checklist de conferência, não tem código).
+5. No final:
+   - Confira o Turno 3 da seção 9 — ele precisa citar as perguntas dos Turnos 1 e 2 (prova de memória).
+   - Confira `resultados_seguranca.csv` gerado e revise a coluna `avaliacao_manual` se rodar de novo.
 
 ## Limitações conhecidas
 
-- **Cota de créditos gratuitos da HuggingFace**: a conta usada nos testes já esgotou a cota mensal mais de uma vez durante o desenvolvimento (erro HTTP 402). Se isso acontecer ao tentar reproduzir, é necessário usar outro token (de outra conta) ou aguardar o reset mensal — não é um bug do código. Documentado como Problema 2 em `relatorio_evolucao_sprint03.pdf`.
-- **max_new_tokens reduzido para 300** (em vez de 1000) para conter esse consumo de crédito — algumas respostas mais longas no eval set saíram truncadas (ver `relatorio_modelos.md`, seção 3).
-- Os nomes exatos dos 2 modelos comparados (seção 7) são escolhidos dinamicamente e podem variar dependendo de qual conta/token for usado para rodar.
+- **Cota de créditos gratuitos da HuggingFace (só afeta o Bloco B):** a conta usada nos testes esgotou a cota mensal mais de uma vez durante o desenvolvimento (erro HTTP 402). Se isso acontecer ao reproduzir, o notebook reaproveita automaticamente o `comparativo_modelos.csv` já entregue neste repositório (com resultados reais de uma execução anterior) em vez de travar — mas só se esse arquivo estiver anexado como input (passo 2 acima). Documentado como Problema 2 em `relatorio_evolucao_sprint03.pdf`.
+- `max_new_tokens` reduzido para 300 (em vez de 1000) para conter esse consumo de crédito na comparação de modelos — algumas respostas mais longas do eval set saíram truncadas (ver `relatorio_modelos.md`, seção 3).
+- O modelo local (Qwen2.5-1.5B) é pequeno; em alguns casos de teste de segurança a resposta pode sair um pouco desorganizada mesmo sem quebrar o guardrail — isso está registrado com honestidade nas avaliações de `resultados_seguranca.csv` (2 dos 6 casos foram marcados como "PARCIAL", não "OK").
 
 ## Equipe
 
-Gustavo Bitencourt-RM:568885, Daniel Vieira-RM: 573326, Leonardo Takachi-RM: 569066, Giovane Salazar-RM: 570396
- 
+Gustavo Bitencourt — RM: 568885, Daniel Vieira — RM: 573326, Leonardo Takachi — RM: 569066, Giovane Salazar — RM: 570396
